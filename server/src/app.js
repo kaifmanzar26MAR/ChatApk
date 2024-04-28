@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import homeRouter from "./routes/home.routes.js";
 import userRouter from "./routes/user.routes.js";
+import chatRouter from "./routes/chat.routes.js"
 import bodyParser from "body-parser";
 const app = express();
 app.use(bodyParser.json());
@@ -22,6 +23,7 @@ app.use(cookieParser());
 //routes declaration
 app.use("/api", homeRouter);
 app.use("/api/user", userRouter);
+app.use("/api/chat",chatRouter)
 
 app.use(express.static(path.join(__dirname, "/client/dist")));
 app.get('*',(req,res)=>{
