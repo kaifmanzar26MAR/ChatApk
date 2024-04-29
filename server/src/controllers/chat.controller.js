@@ -6,7 +6,11 @@ import { Message } from "../models/message.model.js";
 import { Conversation } from "../models/conversation.model.js";
 
 const sendMessage = asyncHandler(async (req, res) => {
-  const { sender, receiver, text } = req.body;
+  const { receiver, text } = req.body;
+
+  // console.log(req.user);
+
+  const sender=req.user._id;
 
   const message = new Message({
     sender,
@@ -21,12 +25,12 @@ const sendMessage = asyncHandler(async (req, res) => {
   let conversationInstance = await Conversation.findOne({
     conversationBetween: { $all: [sender, receiver] },
   });
-  console.log(conversationInstance)
+  // console.log(conversationInstance)
   if (!conversationInstance) {
     conversationInstance = await Conversation.create({
         conversationBetween: [sender, receiver],
     });
-    console.log("new conversation", conversationInstance)
+    // console.log("new conversation", conversationInstance)
 
     if (!conversationInstance) {
       throw new ApiError(500, "Error in creating conversation!!");
@@ -37,11 +41,28 @@ const sendMessage = asyncHandler(async (req, res) => {
 
   await Promise.all([conversationInstance.save(), message.save()]);
 
-  console.log(conversationInstance);
+  // console.log(conversationInstance);
 
   return res
     .status(200)
     .json(new ApiResponse(201, conversationInstance, "Message Sent!!"));
 });
 
-export { sendMessage };
+
+const getAllConversationMessage= asyncHandler(async(req,res)=>{
+  const {member} = req.body;
+  const sender=req.user._id;
+
+  const conversationInstance = await Conversation.findOne({
+    conversationBetween: { $all: [sender, member] },
+  }).populate("conversationMessages");
+
+  if (!conversationInstance) {
+    throw new ApiError(500, "Error in creating conversation!!");
+  }
+
+  return res.status(200).json(new ApiResponse(201, conversationInstance.conversationMessages, "Got Message Sussessfully!!"))
+
+})
+
+export { sendMessage, getAllConversationMessage };

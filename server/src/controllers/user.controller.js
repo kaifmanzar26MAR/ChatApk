@@ -77,7 +77,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
     user._id
   );
-  console.log(refreshToken)
+  console.log(refreshToken);
 
   const loggedInUser = await User.findById(user._id).select(
     "-password -refreshToken"
@@ -207,6 +207,19 @@ const GetUserById = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Got user Successfully"));
 });
 
+const getAllUserExceptTheLoginOne = asyncHandler(async (req, res) => {
+  const logedinUser=req.user._id;
+
+  const allOtherUsers = await User.find({ _id: { $ne: logedinUser } });
+
+
+  if(!allOtherUsers){
+    throw new ApiError(500, "Error in Finding Other Users!!");
+  }
+
+  return res.status(200).json(new ApiResponse(201, allOtherUsers, "Got Other Users Successfully!!"))
+});
+
 export {
   registerUser,
   loginUser,
@@ -215,4 +228,5 @@ export {
   changeCurrentPassword,
   getCurrentUser,
   GetUserById,
+  getAllUserExceptTheLoginOne,
 };
