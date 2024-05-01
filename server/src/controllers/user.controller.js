@@ -4,6 +4,7 @@ import { User } from "../models/user.model.js";
 // import {uploadOnCloudinary} from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
+import { io } from "../connection/socket.js";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -88,6 +89,8 @@ const loginUser = asyncHandler(async (req, res) => {
   };
 
   // console.log("hii")
+  io.emit("login", user._id);
+  
   return res
     .status(200)
     .cookie("accessToken", accessToken, options)

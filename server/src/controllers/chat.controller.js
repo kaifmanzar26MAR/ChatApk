@@ -4,6 +4,7 @@ import { User } from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Message } from "../models/message.model.js";
 import { Conversation } from "../models/conversation.model.js";
+import { getReceiverSocketId, io } from "../connection/socket.js";
 
 const sendMessage = asyncHandler(async (req, res) => {
   const { receiver, text } = req.body;
@@ -41,6 +42,12 @@ const sendMessage = asyncHandler(async (req, res) => {
 
   await Promise.all([conversationInstance.save(), message.save()]);
 
+  const receiverSocketId= getReceiverSocketId(receiver);
+
+  if(receiverSocketId){
+    io.to(receiverSocketId).emit("newMessage", message)
+  }
+
   // console.log(conversationInstance);
 
   return res
@@ -53,12 +60,12 @@ const getAllConversationMessage= asyncHandler(async(req,res)=>{
   const {member} = req.body;
   const sender=req.user._id;
 
-  const conversationInstance = await Conversation.findOne({
+  let conversationInstance = await Conversation.findOne({
     conversationBetween: { $all: [sender, member] },
   }).populate("conversationMessages");
 
   if (!conversationInstance) {
-    throw new ApiError(500, "Error in creating conversation!!");
+    conversationInstance=[];
   }
 
   return res.status(200).json(new ApiResponse(201, conversationInstance.conversationMessages, "Got Message Sussessfully!!"))

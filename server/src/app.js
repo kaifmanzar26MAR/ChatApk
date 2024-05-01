@@ -6,7 +6,7 @@ import homeRouter from "./routes/home.routes.js";
 import userRouter from "./routes/user.routes.js";
 import chatRouter from "./routes/chat.routes.js"
 import bodyParser from "body-parser";
-const app = express();
+import { app } from "./connection/socket.js";
 app.use(bodyParser.json());
 app.use(
   cors({

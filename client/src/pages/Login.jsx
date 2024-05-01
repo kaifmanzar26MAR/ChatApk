@@ -28,6 +28,7 @@ const Login = () => {
       console.log(res.data.data);
       alert(res.data.message);
       navigate('/');
+      window.location.reload();
     } catch (error) {
       console.log(error);
       alert(error.response.data.message);
