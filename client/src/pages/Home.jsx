@@ -27,7 +27,7 @@ const Home = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/user/getalluserexceptthelogedinone",
+        "https://chatapk.onrender.com/api/user/getalluserexceptthelogedinone",
         {
           withCredentials: true,
         }
@@ -41,7 +41,7 @@ const Home = () => {
   const fetchChat = async (member) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/chat/getallconversationmessage",
+        "https://chatapk.onrender.com/api/chat/getallconversationmessage",
         {
           member,
         },
@@ -60,7 +60,7 @@ const Home = () => {
   const sendMessage = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/chat/sendmessage",
+        "https://chatapk.onrender.com/api/chat/sendmessage",
         {
           text: message,
           receiver: chattingWith._id,
@@ -97,7 +97,7 @@ const Home = () => {
   const handleLogout = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/user/logout",
+        "https://chatapk.onrender.com/api/user/logout",
         {
           withCredentials: true,
         }
