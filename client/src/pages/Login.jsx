@@ -12,7 +12,7 @@ const Login = () => {
     console.log(loginData);
     try {
       const res = await axios.post(
-        "http://localhost:8000/api/user/userlogin",
+        "https://chatapk.onrender.com/api/user/userlogin",
         loginData,
         {
           headers: {

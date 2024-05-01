@@ -10,7 +10,7 @@ import { app } from "./connection/socket.js";
 app.use(bodyParser.json());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://chatapk.onrender.com",
     credentials: true,
   })
 );
