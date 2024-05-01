@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+::-webkit-scrollbar{
+    background: #414040;
+    width: 5px;
+}
+::-webkit-scrollbar-thumb{
+    background-color: rgb(142, 142, 142);
+    border-radius: 2px 2px 2px 2px;
+    cursor: pointer;
+}
+
+
+.messages-container {
+    overflow-y: auto;
+    max-height: 80vh; /* Adjust this value as needed */
+  }
+  

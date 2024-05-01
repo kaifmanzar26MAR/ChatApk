@@ -16,7 +16,7 @@ export const SocketContextProvider = ({ children }) => {
   useEffect(() => {
     if (user) {
       const initializeSocket = () => {
-        const newSocket = io("https://chatapk.onrender.com", {
+        const newSocket = io("http://localhost:8000", {
           query: {
             userId: user._id,
           },
